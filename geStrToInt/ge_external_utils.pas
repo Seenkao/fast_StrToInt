@@ -488,14 +488,12 @@ begin
       if n = 66 then
       begin
         m := 37;
-        z := 1;
       end
       else
         m := 36;
     end
     else begin
       m := 38;
-      z := 7;
     end;
   end;
 
@@ -516,6 +514,7 @@ begin
         if n > 1 then                                   // max 1
           exit;
     nshl := 3;
+    z := 7;
   end
   else
     if m = 37 then
@@ -525,6 +524,7 @@ begin
       if (lenStr - correct) > allHOBParametr[Size].maxLen2 then
         exit;
       nshl := 1;
+      z := 1;
     end;
   // Rus: вычисляем шестнадцатеричное число.
   // Eng: calculate a hexadecimal number.
