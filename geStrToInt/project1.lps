@@ -1,0 +1,307 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CONFIG>
+  <ProjectSession>
+    <PathDelim Value="\"/>
+    <Version Value="11"/>
+    <BuildModes Active="Default"/>
+    <Units Count="22">
+      <Unit0>
+        <Filename Value="project1.lpr"/>
+        <IsPartOfProject Value="True"/>
+        <IsVisibleTab Value="True"/>
+        <TopLine Value="237"/>
+        <CursorPos X="18" Y="276"/>
+        <UsageCount Value="235"/>
+        <Loaded Value="True"/>
+      </Unit0>
+      <Unit1>
+        <Filename Value="ge_external_utils.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="ge_external_Utils"/>
+        <EditorIndex Value="1"/>
+        <TopLine Value="144"/>
+        <CursorPos X="73" Y="166"/>
+        <ExtraEditorCount Value="2"/>
+        <ExtraEditor1>
+          <EditorIndex Value="-1"/>
+          <WindowIndex Value="-1"/>
+          <TopLine Value="-1"/>
+          <CursorPos X="-1" Y="-1"/>
+        </ExtraEditor1>
+        <ExtraEditor2>
+          <EditorIndex Value="-1"/>
+          <WindowIndex Value="-1"/>
+          <TopLine Value="460"/>
+          <CursorPos X="66" Y="415"/>
+        </ExtraEditor2>
+        <UsageCount Value="235"/>
+        <Loaded Value="True"/>
+      </Unit1>
+      <Unit2>
+        <Filename Value="def_stringtovalue.cfg"/>
+        <IsPartOfProject Value="True"/>
+        <EditorIndex Value="2"/>
+        <CursorPos X="9" Y="24"/>
+        <UsageCount Value="53"/>
+        <Loaded Value="True"/>
+        <DefaultSyntaxHighlighter Value="None"/>
+      </Unit2>
+      <Unit3>
+        <Filename Value="D:\Zengl_SRC\src\zgl_timers.pas"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="70"/>
+        <CursorPos X="30" Y="24"/>
+        <UsageCount Value="68"/>
+      </Unit3>
+      <Unit4>
+        <Filename Value="D:\Zengl_SRC\src\zgl_mouse.pas"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="55"/>
+        <CursorPos Y="32"/>
+        <UsageCount Value="61"/>
+      </Unit4>
+      <Unit5>
+        <Filename Value="D:\Zengl_SRC\src\zgl_memory.pas"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="162"/>
+        <CursorPos X="10" Y="135"/>
+        <UsageCount Value="55"/>
+      </Unit5>
+      <Unit6>
+        <Filename Value="D:\home\seenkao\FreePas\fpcsrc\rtl\objpas\sysutils\sysstrh.inc"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="106"/>
+        <CursorPos X="10" Y="115"/>
+        <UsageCount Value="9"/>
+      </Unit6>
+      <Unit7>
+        <Filename Value="D:\home\seenkao\FreePas\fpcsrc\rtl\objpas\sysutils\sysstr.inc"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="856"/>
+        <CursorPos X="11" Y="858"/>
+        <UsageCount Value="9"/>
+      </Unit7>
+      <Unit8>
+        <Filename Value="D:\Zengl_SRC\src\zgl_utils.pas"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="108"/>
+        <CursorPos X="23" Y="112"/>
+        <UsageCount Value="21"/>
+      </Unit8>
+      <Unit9>
+        <Filename Value="D:\Zengl_SRC\src\zgl_config.cfg"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos X="7" Y="13"/>
+        <UsageCount Value="8"/>
+        <DefaultSyntaxHighlighter Value="None"/>
+      </Unit9>
+      <Unit10>
+        <Filename Value="D:\home\seenkao\FP_Laz\fpcsrc\rtl\inc\generic.inc"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="2543"/>
+        <CursorPos X="33" Y="2560"/>
+        <UsageCount Value="20"/>
+      </Unit10>
+      <Unit11>
+        <Filename Value="..\..\00018 - Create Const Color\drawall.pas"/>
+        <UnitName Value="DrawAll"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="20"/>
+        <CursorPos Y="23"/>
+        <UsageCount Value="22"/>
+      </Unit11>
+      <Unit12>
+        <Filename Value="..\..\..\..\..\Zengl_SRC\src\zgl_timers.pas"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="404"/>
+        <UsageCount Value="3"/>
+      </Unit12>
+      <Unit13>
+        <Filename Value="..\..\..\..\..\Zengl_SRC\src\zgl_utils.pas"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="134"/>
+        <CursorPos X="4" Y="144"/>
+        <UsageCount Value="18"/>
+      </Unit13>
+      <Unit14>
+        <Filename Value="..\..\..\..\..\Zengl_SRC\src\zgl_config.cfg"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos X="4" Y="13"/>
+        <UsageCount Value="18"/>
+        <DefaultSyntaxHighlighter Value="None"/>
+      </Unit14>
+      <Unit15>
+        <Filename Value="..\..\..\..\seenkao\FreePas\projects\0003-testing_all\project1.lpr"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="177"/>
+        <UsageCount Value="15"/>
+      </Unit15>
+      <Unit16>
+        <Filename Value="..\..\..\..\seenkao\FreePas\fpcsrc\rtl\objpas\sysutils\sysstrh.inc"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="127"/>
+        <CursorPos X="14" Y="134"/>
+        <UsageCount Value="5"/>
+      </Unit16>
+      <Unit17>
+        <Filename Value="..\..\..\..\seenkao\FreePas\fpcsrc\rtl\objpas\sysutils\sysstr.inc"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="1072"/>
+        <CursorPos X="3" Y="1075"/>
+        <UsageCount Value="5"/>
+      </Unit17>
+      <Unit18>
+        <Filename Value="..\..\..\..\..\media\mirrel\DataDisk\debian\Programming\Lazarus\Zengl_SRC\src\zgl_application.pas"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="2256"/>
+        <CursorPos X="15" Y="2293"/>
+        <UsageCount Value="12"/>
+      </Unit18>
+      <Unit19>
+        <Filename Value="..\..\..\fpcsrc\rtl\objpas\sysutils\sysstrh.inc"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="101"/>
+        <CursorPos X="10" Y="123"/>
+        <UsageCount Value="8"/>
+      </Unit19>
+      <Unit20>
+        <Filename Value="..\..\fpcsrc\rtl\unix\sysutils.pp"/>
+        <EditorIndex Value="-1"/>
+        <UsageCount Value="15"/>
+      </Unit20>
+      <Unit21>
+        <Filename Value="..\..\fpcsrc\rtl\objpas\sysutils\sysstrh.inc"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="100"/>
+        <CursorPos X="20" Y="134"/>
+        <UsageCount Value="15"/>
+      </Unit21>
+    </Units>
+    <JumpHistory Count="30" HistoryIndex="29">
+      <Position1>
+        <Filename Value="ge_external_utils.pas"/>
+        <Caret Line="236" Column="56" TopLine="235"/>
+      </Position1>
+      <Position2>
+        <Filename Value="ge_external_utils.pas"/>
+        <Caret Line="133" Column="59" TopLine="127"/>
+      </Position2>
+      <Position3>
+        <Filename Value="ge_external_utils.pas"/>
+        <Caret Line="242" Column="37" TopLine="242"/>
+      </Position3>
+      <Position4>
+        <Filename Value="ge_external_utils.pas"/>
+        <Caret Line="133" Column="54" TopLine="130"/>
+      </Position4>
+      <Position5>
+        <Filename Value="ge_external_utils.pas"/>
+        <Caret Line="291" Column="37" TopLine="260"/>
+      </Position5>
+      <Position6>
+        <Filename Value="ge_external_utils.pas"/>
+        <Caret Line="269" Column="19" TopLine="260"/>
+      </Position6>
+      <Position7>
+        <Filename Value="project1.lpr"/>
+        <Caret Line="264" Column="19" TopLine="230"/>
+      </Position7>
+      <Position8>
+        <Filename Value="ge_external_utils.pas"/>
+        <Caret Line="216" Column="12" TopLine="193"/>
+      </Position8>
+      <Position9>
+        <Filename Value="ge_external_utils.pas"/>
+        <Caret Line="123" Column="11" TopLine="122"/>
+      </Position9>
+      <Position10>
+        <Filename Value="ge_external_utils.pas"/>
+        <Caret Line="121" Column="12" TopLine="117"/>
+      </Position10>
+      <Position11>
+        <Filename Value="ge_external_utils.pas"/>
+        <Caret Line="211" Column="3" TopLine="207"/>
+      </Position11>
+      <Position12>
+        <Filename Value="ge_external_utils.pas"/>
+        <Caret Line="123" Column="46" TopLine="114"/>
+      </Position12>
+      <Position13>
+        <Filename Value="ge_external_utils.pas"/>
+        <Caret Line="234" Column="17" TopLine="217"/>
+      </Position13>
+      <Position14>
+        <Filename Value="ge_external_utils.pas"/>
+        <Caret Line="126" Column="40" TopLine="102"/>
+      </Position14>
+      <Position15>
+        <Filename Value="ge_external_utils.pas"/>
+        <Caret Line="242" Column="20" TopLine="233"/>
+      </Position15>
+      <Position16>
+        <Filename Value="ge_external_utils.pas"/>
+        <Caret Line="130" Column="24" TopLine="104"/>
+      </Position16>
+      <Position17>
+        <Filename Value="ge_external_utils.pas"/>
+        <Caret Line="260" Column="15" TopLine="251"/>
+      </Position17>
+      <Position18>
+        <Filename Value="ge_external_utils.pas"/>
+        <Caret Line="134" Column="33" TopLine="108"/>
+      </Position18>
+      <Position19>
+        <Filename Value="ge_external_utils.pas"/>
+        <Caret Line="277" Column="11" TopLine="269"/>
+      </Position19>
+      <Position20>
+        <Filename Value="ge_external_utils.pas"/>
+        <Caret Line="139" Column="9" TopLine="112"/>
+      </Position20>
+      <Position21>
+        <Filename Value="ge_external_utils.pas"/>
+        <Caret Line="294" Column="16" TopLine="282"/>
+      </Position21>
+      <Position22>
+        <Filename Value="ge_external_utils.pas"/>
+        <Caret Line="142" Column="19" TopLine="117"/>
+      </Position22>
+      <Position23>
+        <Filename Value="ge_external_utils.pas"/>
+        <Caret Line="333" Column="21" TopLine="316"/>
+      </Position23>
+      <Position24>
+        <Filename Value="ge_external_utils.pas"/>
+        <Caret Line="146" Column="24" TopLine="122"/>
+      </Position24>
+      <Position25>
+        <Filename Value="ge_external_utils.pas"/>
+        <Caret Line="359" Column="18" TopLine="332"/>
+      </Position25>
+      <Position26>
+        <Filename Value="ge_external_utils.pas"/>
+        <Caret Line="150" Column="40" TopLine="126"/>
+      </Position26>
+      <Position27>
+        <Filename Value="ge_external_utils.pas"/>
+        <Caret Line="378" Column="5" TopLine="358"/>
+      </Position27>
+      <Position28>
+        <Filename Value="ge_external_utils.pas"/>
+        <Caret Line="302" Column="5" TopLine="279"/>
+      </Position28>
+      <Position29>
+        <Filename Value="ge_external_utils.pas"/>
+        <Caret Line="378" Column="28" TopLine="353"/>
+      </Position29>
+      <Position30>
+        <Filename Value="ge_external_utils.pas"/>
+        <Caret Line="103" Column="12" TopLine="94"/>
+      </Position30>
+    </JumpHistory>
+    <RunParams>
+      <FormatVersion Value="2"/>
+      <Modes Count="0" ActiveMode="default"/>
+    </RunParams>
+  </ProjectSession>
+</CONFIG>
