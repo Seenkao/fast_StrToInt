@@ -155,6 +155,12 @@ function s_StrToQWord(const Str: String): QWord; {$IfDef ADD_FAST}inline;{$EndIf
 
 implementation
 
+const
+  dataHex: array[0..54] of Byte = (  0,  1,  2,  3,  4,  5,  6,  7,  8,  9, 16, 16, 16, 16, 16, 16,
+                                    16, 10, 11, 12, 13, 14, 15, 16, 16, 16, 16, 16, 16, 16, 16, 16,
+                                    16,  0,  1,  2,  3,  4,  5,  6,  7,  8,  9, 16, 16, 16, 16, 16,
+                                    16, 10, 11, 12, 13, 14, 15);
+
 type
   PgeUseParametr = ^geUseParametr;
   geUseParametr = record
@@ -542,14 +548,13 @@ begin
     while i <= lenStr do
     begin
       m := m shl 4;       // возможно ли что это место выдаст когда-нибудь ошибку?
-      n := Byte(Str[i]);
-      case n of
-          48..57: m := m + n - 48;
-          65..70: m := m + n - 55;
-          97..102: m := m + n - 87;
-        else
-          exit;
-      end;
+      n := Byte(Str[i]) - 48;
+      if n > 55 then
+        exit;
+      n := dataHex[n];
+      if n = 16 then
+        exit;
+      m := m + n; 
       inc(i);
     end;
   end
