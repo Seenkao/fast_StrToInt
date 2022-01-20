@@ -19,6 +19,8 @@ in the module.
 In my opinion, the Val function is quite outdated and needs to be updated, I just provide code that works a little better. Val was created when I was young.
 But I must admit that it is good enough to this day.
 
+**Note! Hexadecimal, octal and binary numbers are treated as unsigned!!! And therefore they are processed by functions that work with unsigned numbers.**
+
 **pluses (+)**
 - faster work speed.
 - should be suitable for any platform, as it is made on pure pascal.
@@ -85,6 +87,8 @@ If this project was useful to you, you can support me. Sberbank:
 
 По моему мнению функция Val достаточно устарела, и требуется её обновление, я лишь привожу код, который работает немного лучше. Val была создана ещё во
 времена моей молодости. Но я должен признать, что она достаточно хороша и по сей день.
+
+**Обратите внимание! Шестнадцатеричные, восьмеричные и двоичные числа рассматриваются как беззнаковые!!! И потому обрабатываются функциями, которые работают с числами без знака.**
 
 **плюсы (+)**
 - быстрее скорость работы.
