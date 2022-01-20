@@ -168,25 +168,6 @@ begin
     end;
     timeEnd := timer_GetTicks - timeStart;
     timeNew := timeNew + timeEnd;
-
-    // ----------------------------------------------
-
-{    timeStart := timer_GetTicks;
-    for Count := 0 to MAX_TEST do
-    begin
-      u_IntToStr(myNumb[Count]);
-    end;
-    timeEnd := timer_GetTicks - timeStart;
-    timeNew2 := timeNew2 + timeEnd;
-
-    timeStart := timer_GetTicks;
-    for Count := 0 to MAX_TEST do
-    begin
-      u_IntToStr(myNumb[Count]);
-    end;
-    timeEnd := timer_GetTicks - timeStart;
-    timeOld2 := timeOld2 + timeEnd;       }
-    // ----------------------------------------------
   end;
   Write('StrToInt standard    ');
   Writeln(timeOld / 101);
@@ -194,11 +175,6 @@ begin
   Write('StrToInt made by me ');
   Writeln(timeNew / 101);
 
-{  Write('Test Speed Single and Integer ');
-  Writeln(timeOld2 / 101);
-
-  Write('Test Speed Single all         ');
-  Writeln(timeNew2 / 101);}
   Writeln('Test end.');
 
   WriteLn;
@@ -211,6 +187,10 @@ begin
     geStrToInt(myS[Count], nnnn);
     WriteLn(nnnn);
   end;
+  
+(* Rus: блок примеров для использования трёх основных функций.
+ * Eng: a block of examples for using the three main functions.
+ *)
 
   // Rus: здесь примеры использования с разными флагами.
   // Eng: here are examples of use with different flags.
@@ -262,6 +242,10 @@ begin
   else
     WriteLn('Error');
 
+(* Rus: блок примеров для использования пользовательских функций.
+ * Eng: a block of examples for using custom functions.
+ *)   
+  
   mn := s_StrToByte('0xff');
   WriteLn(mn);
 
@@ -270,10 +254,6 @@ begin
   // will throw an error if the value is greater than the byte value
   else
     WriteLn('Error');
-(*  mmmm := 18446744073709551615;   // этот код был для проверки
-
-  mmmm := mmmm + 5;
-  WriteLn(mmmm); *)
 
   Readln;
 end.
