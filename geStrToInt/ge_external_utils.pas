@@ -496,7 +496,9 @@ begin
       end
       else
         if n = 88 then
-          m := 36;
+          m := 36
+        else
+          n := Byte(Str[3]);
     end;
   end;
 
@@ -506,9 +508,9 @@ begin
   if m = 38 then
   begin
     n := n - 48;
-    if lenStr > useParametr^.maxLen8 then
+    if (lenStr - correct) > useParametr^.maxLen8 then
       exit;
-    if useParametr^.maxLen8 = lenStr then       // предельная длина
+    if useParametr^.maxLen8 = (lenStr - correct) then       // предельная длина
       if (Size = isByte) or (Size = isLongWord) then
       begin
         if n > 3 then                                   // max 3
