@@ -90,16 +90,6 @@ type
   maxUIntVal = QWord;
   {$EndIf}
 
-  geUseParametr = record
-    maxLen: LongWord;
-    maxNumDiv10: maxUIntVal;
-    maxNumeric: maxUIntVal;
-  end;
-
-  geHOBParameter = record
-    maxLen16, maxLen8, maxLen2: maxUIntVal;
-  end;
-
 // Rus: эта функция для десятичных чисел со знаком.
 // Eng: this function is for signed decimal numbers.
 function geStrToInt(const Str: String; out Value: maxIntVal; Size: LongWord = isInteger): Boolean;
@@ -129,45 +119,58 @@ function geHOBStrToUInt(const Str: String; out Value: maxUIntVal; Size: LongWord
 // Rus: Числа со знаком. Здесь нельзя использовать шестнадцатеричные, восьмеричные
 //      и двоичные числа.
 // Eng: Signed numbers. Hexadecimal, octal and binary numbers cannot be used here.
-function sc_StrToShortInt(const Str: String; out Value: ShortInt): Boolean;    // byte
-function s_StrToShortInt(const Str: String): ShortInt;                         // byte
+function sc_StrToShortInt(const Str: String; out Value: ShortInt): Boolean; {$IfDef ADD_FAST}inline;{$EndIf}   // byte
+function s_StrToShortInt(const Str: String): ShortInt; {$IfDef ADD_FAST}inline;{$EndIf}                        // byte
 {$IfDef USE_CPU16}
-function sc_StrToSmallInt(const Str: String; out Value: SmallInt): Boolean;    // word
-function s_StrToSmallInt(const Str: String): SmallInt;                         // word
+function sc_StrToSmallInt(const Str: String; out Value: SmallInt): Boolean; {$IfDef ADD_FAST}inline;{$EndIf}   // word
+function s_StrToSmallInt(const Str: String): SmallInt; {$IfDef ADD_FAST}inline;{$EndIf}                        // word
 {$EndIf}
 {$IfDef USE_CPU32}
-function sc_StrToInt(const Str: String; out Value: Integer): Boolean;
-function s_StrToInt(const Str: String): Integer;
+function sc_StrToInt(const Str: String; out Value: Integer): Boolean; {$IfDef ADD_FAST}inline;{$EndIf}
+function s_StrToInt(const Str: String): Integer; {$IfDef ADD_FAST}inline;{$EndIf}
 {$EndIf}
 {$IfDef USE_CPU64}
-function sc_StrToInt64(const Str: String; out Value: Int64): Boolean;
-function s_StrToInt64(const Str: String): Int64;
+function sc_StrToInt64(const Str: String; out Value: Int64): Boolean; {$IfDef ADD_FAST}inline;{$EndIf}
+function s_StrToInt64(const Str: String): Int64; {$IfDef ADD_FAST}inline;{$EndIf}
 {$EndIf}
+
 // Rus: Числа без знака. Эти функции могут использоваться и для шестнадцатеричныи
 //      и восьмеричных и двоичных чисел.
 // Eng: Numbers without a sign. These functions can be used for hexadecimal, octal
 //      and binary numbers as well.
-function sc_StrToByte(const Str: String; out Value: Byte): Boolean;
-function s_StrToByte(const Str: String): Byte;
+function sc_StrToByte(const Str: String; out Value: Byte): Boolean; {$IfDef ADD_FAST}inline;{$EndIf}
+function s_StrToByte(const Str: String): Byte; {$IfDef ADD_FAST}inline;{$EndIf}
 {$IfDef USE_CPU16}
-function sc_StrToWord(const Str: String; out Value: Word): Boolean;
-function s_StrToWord(const Str: String): Word;
+function sc_StrToWord(const Str: String; out Value: Word): Boolean; {$IfDef ADD_FAST}inline;{$EndIf}
+function s_StrToWord(const Str: String): Word; {$IfDef ADD_FAST}inline;{$EndIf}
 {$EndIf}
 {$IfDef USE_CPU32}
-function sc_StrToLongWord(const Str: String; out Value: LongWord): Boolean;
-function s_StrToLongWord(const Str: String): LongWord;
+function sc_StrToLongWord(const Str: String; out Value: LongWord): Boolean; {$IfDef ADD_FAST}inline;{$EndIf}
+function s_StrToLongWord(const Str: String): LongWord; {$IfDef ADD_FAST}inline;{$EndIf}
 {$EndIf}
 {$IfDef USE_CPU64}
-function sc_StrToQWord(const Str: String; out Value: QWord): Boolean;
-function s_StrToQWord(const Str: String): QWord;
+function sc_StrToQWord(const Str: String; out Value: QWord): Boolean; {$IfDef ADD_FAST}inline;{$EndIf}
+function s_StrToQWord(const Str: String): QWord; {$IfDef ADD_FAST}inline;{$EndIf}
 {$EndIf}
 
 implementation
 
+type
+  PgeUseParametr = ^geUseParametr;
+  geUseParametr = record
+    maxLen: LongWord;
+    maxNumDiv10: maxUIntVal;
+    maxNumeric: maxUIntVal;
+  end;
+
+  PgeHOBParameter = ^geHOBParameter;
+  geHOBParameter = record
+    maxLen16, maxLen8, maxLen2: maxUIntVal;
+  end;
+  
 var
   allIntParametr, allUIntParametr: array[0..7] of geUseParametr;
   allHOBParametr: array[0..3] of geHOBParameter;
-  IntMinus: Boolean;                         // указывает знак минуса
 
 // Rus: выставляем необходимые параметры. Иначе geStrToInt работать не будет.
 //      В блоке инициализации.
@@ -395,6 +398,7 @@ function geStrToUInt(const Str: String; out Value: maxUIntVal; Size: LongWord = 
 var
   lenStr, i: maxUIntVal;
   m, n, z: maxUIntVal;
+  useParametr: PgeUseParametr;
 begin
   {$push}
   {$Q-}{$R-}
@@ -418,7 +422,8 @@ begin
     exit;
   end;
 
-  if lenStr > allUIntParametr[Size].maxLen then
+  useParametr := @allUIntParametr[Size];
+  if lenStr > useParametr^.maxLen then
     Exit;
   i := 2;
   while i < lenStr do
@@ -431,13 +436,13 @@ begin
   end;
   // Rus: Если уже превысили значение, то выходим
   // Eng: If you have already exceeded the value, then exit
-  if m > allUIntParametr[Size].maxNumDiv10 then
+  if m > useParametr^.maxNumDiv10 then
     exit;
   m := m * 10;
   z := Byte(Str[i]) - 48;
   if z > 9 then
     exit;
-  n := allUIntParametr[Size].maxNumeric - m;
+  n := useParametr^.maxNumeric - m;
   if z > n then
     exit;
   Value := m + z;
@@ -450,8 +455,7 @@ var
   lenStr, i: maxUIntVal;
   m, n, nshl, z: maxUIntVal;
   correct: maxUIntVal = 0;
-label
-  jmpExit;
+  useParametr: PgeHOBParameter;
 begin
   {$push}
   {$Q-}{$R-}
@@ -466,7 +470,7 @@ begin
   // первые значения влияют на рабочий код. Потому что здесь будут использоваться
   // и шестнадцатеричные и восьмеричные и двоичные значения.
   // Числа надо обрабатывать соответственно $(0x) - шестнадцатеричный,
-  // %(0b) - двоичный, &(0) - восьмеричный
+  // %(0b) - двоичный, &(0, 0o) - восьмеричный
   // Так же учитываем при работе с не десятичными числами, что перед ними идут
   // дополнительные значения, а значит длина их должна быть больше на 1 или 2.
   // Выставляю на 1 больше, что означает, что при первом нуле, вероятно надо
@@ -481,7 +485,8 @@ begin
   begin
     if n > 97 then
       n := n - 32;
-    if (n = 66) or (n = 88) then
+    m := 38;
+    if (n = 66) or (n = 88) or (n = 79) then
     begin
       correct := 1;
       i := 3;
@@ -490,21 +495,20 @@ begin
         m := 37;
       end
       else
-        m := 36;
-    end
-    else begin
-      m := 38;
+        if n = 88 then
+          m := 36;
     end;
   end;
 
+  useParametr := @allHOBParametr[Size];
   // Rus: проверим предел для восьмеричной системы.
   // Eng: check the limit for the octal system.
   if m = 38 then
   begin
     n := n - 48;
-    if lenStr > allHOBParametr[Size].maxLen8 then
+    if lenStr > useParametr^.maxLen8 then
       exit;
-    if allHOBParametr[Size].maxLen8 = lenStr then       // предельная длина
+    if useParametr^.maxLen8 = lenStr then       // предельная длина
       if (Size = isByte) or (Size = isLongWord) then
       begin
         if n > 3 then                                   // max 3
@@ -521,7 +525,7 @@ begin
     begin
       // Rus: для двоичной системы.
       // Eng: for a binary system.
-      if (lenStr - correct) > allHOBParametr[Size].maxLen2 then
+      if (lenStr - correct) > useParametr^.maxLen2 then
         exit;
       nshl := 1;
       z := 1;
@@ -530,7 +534,7 @@ begin
   // Eng: calculate a hexadecimal number.
   if m = 36 then
   begin
-    if (lenStr - correct) > allHOBParametr[Size].maxLen16 then
+    if (lenStr - correct) > useParametr^.maxLen16 then
       exit;
     m := 0;
     while i <= lenStr do
@@ -573,6 +577,8 @@ function geStrToInt(const Str: String; out Value: maxIntVal; Size: LongWord = is
 var
   lenStr, i: maxUIntVal;
   m, n, z: maxUIntVal;
+  useParametr: PgeUseParametr;
+  IntMinus: Boolean;
 label
   jmpEndStr;
 begin
@@ -616,6 +622,7 @@ begin
   if m > 9 then
     exit;
 
+  useParametr := @allIntParametr[Size];
   // Rus: момент, когда длина на один символ (символ + знак)
   // Eng: moment when the length is one character (symbol + sign)
   if i > lenStr then
@@ -625,7 +632,7 @@ begin
   end;
   // Rus: проверяем длину для данной размерности.
   // Eng: check the length for a given dimension.
-  if lenStr > allIntParametr[Size].maxLen then
+  if lenStr > useParametr^.maxLen then
     Exit;
   while i < lenStr do
   begin
@@ -638,7 +645,7 @@ begin
 
   // Rus: Если уже превысили значение, то выходим
   // Eng: If you have already exceeded the value, then exit
-  if m > allIntParametr[Size].maxNumDiv10 then
+  if m > useParametr^.maxNumDiv10 then
     exit;
   m := m * 10;
   z := Byte(Str[i]) - 48;
@@ -647,9 +654,9 @@ begin
 
 jmpEndStr:
   if IntMinus then
-    n := allIntParametr[Size].maxNumeric + 1 - m
+    n := useParametr^.maxNumeric + 1 - m
   else
-    n := allIntParametr[Size].maxNumeric - m;
+    n := useParametr^.maxNumeric - m;
   if z > n then
     exit;
 
