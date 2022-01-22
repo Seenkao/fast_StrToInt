@@ -135,9 +135,11 @@ function s_StrToInt64(const Str: String): Int64; {$IfDef ADD_FAST}inline;{$EndIf
 {$EndIf}
 
 // Rus: Числа без знака. Эти функции могут использоваться и для шестнадцатеричныи
-//      и восьмеричных и двоичных чисел.
+//      и восьмеричных и двоичных чисел. Данные функции не должны содержать
+//      ведущие нули для десятеричной системы счисления.
 // Eng: Numbers without a sign. These functions can be used for hexadecimal, octal
-//      and binary numbers as well.
+//      and binary numbers as well. These functions must not contain leading zeros
+//      for the decimal number system.
 function sc_StrToByte(const Str: String; out Value: Byte): Boolean; {$IfDef ADD_FAST}inline;{$EndIf}
 function s_StrToByte(const Str: String): Byte; {$IfDef ADD_FAST}inline;{$EndIf}
 {$IfDef USE_CPU16}
@@ -405,6 +407,9 @@ var
   lenStr, i: maxUIntVal;
   m, n, z: maxUIntVal;
   useParametr: PgeUseParametr;
+  correct: maxUIntVal = 0;
+label
+  loopZero;
 begin
   {$push}
   {$Q-}{$R-}
@@ -417,7 +422,18 @@ begin
   lenStr := Length(Str);
   if lenStr = 0 then
     exit;
-  m := Byte(Str[1]) - 48;
+  m := Byte(Str[1]);
+
+loopZero:
+  if m = 48 then
+  begin
+    inc(i);
+    inc(correct);
+    m := Byte(Str[i]);
+    goto loopZero;
+  end;
+    
+  m := m - 48;
   // Rus: если значение не входит в пределы 0..9 - выходим
   // Eng: if the value is outside the range 0..9 - exit
   if m > 9 then
@@ -462,6 +478,8 @@ var
   m, n, nshl, z: maxUIntVal;
   correct: maxUIntVal = 0;
   useParametr: PgeHOBParameter;
+label
+  loopZero;
 begin
   {$push}
   {$Q-}{$R-}
@@ -502,18 +520,26 @@ begin
       end
       else
         if n = 88 then
-          m := 36
-        else
-          n := Byte(Str[3]);
+          m := 36;
+      n := Byte(Str[3]);
     end;
   end;
 
+loopZero:
+  if n = 48 then
+  begin
+    inc(i);
+    inc(correct);
+    n := Byte(Str[i]);
+    goto loopZero;
+  end;    
+
+  n := n - 48;
   useParametr := @allHOBParametr[Size];
   // Rus: проверим предел для восьмеричной системы.
   // Eng: check the limit for the octal system.
   if m = 38 then
   begin
-    n := n - 48;
     if (lenStr - correct) > useParametr^.maxLen8 then
       exit;
     if useParametr^.maxLen8 = (lenStr - correct) then       // предельная длина
@@ -561,7 +587,7 @@ begin
   // Rus: вычисляем двоичное или восьмеричное число.
   // Eng: calculate a binary or octal number.
   else begin
-    m := Byte(Str[i]) - 48;
+    m := n;
     if m > z then
       exit;
     inc(i);
@@ -586,8 +612,9 @@ var
   m, n, z: maxUIntVal;
   useParametr: PgeUseParametr;
   IntMinus: Boolean;
+  correct: maxUIntVal = 0;
 label
-  jmpEndStr;
+  jmpEndStr, loopZero;
 begin
   {$push}
   {$Q-}{$R-}
@@ -622,6 +649,15 @@ begin
     m := Byte(Str[2]);
   end;
 
+loopZero:
+  if m = 48 then
+  begin
+    inc(i);
+    inc(correct);
+    m := Byte(Str[i]);
+    goto loopZero;
+  end;
+  
   inc(i);
   m := m - 48;
   // Rus: если значение не входит в пределы 0..9 - выходим
@@ -639,7 +675,7 @@ begin
   end;
   // Rus: проверяем длину для данной размерности.
   // Eng: check the length for a given dimension.
-  if lenStr > useParametr^.maxLen then
+  if (lenStr - correct) > useParametr^.maxLen then
     Exit;
   while i < lenStr do
   begin
