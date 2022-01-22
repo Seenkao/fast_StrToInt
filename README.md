@@ -49,7 +49,7 @@ Eight signed (decimal only) functions that cannot use hexadecimal, octal, or bin
 - function __sc_StrToInt64__(const Str: String; out Value: Int64): Boolean;
 - function __s_StrToInt64__(const Str: String): Int64;
 
-Eight functions for unsigned numbers. These functions can use decimal, hexadecimal, octal and binary numbers:
+Eight functions for unsigned numbers. These functions can use decimal, hexadecimal, octal and binary numbers. These functions must not contain leading zeros for the decimal number system:
 - function __sc_StrToByte__(const Str: String; out Value: Byte): Boolean;
 - function __s_StrToByte__(const Str: String): Byte;
 - function __sc_StrToWord__(const Str: String; out Value: Word): Boolean;
@@ -119,7 +119,7 @@ If this project was useful to you, you can support me. Sberbank:
 - function __sc_StrToInt64__(const Str: String; out Value: Int64): Boolean;
 - function __s_StrToInt64__(const Str: String): Int64;
 
-Восемь функций для чисел без знака. Эти функции можно использовать десятичные, шестнадцатеричные, восьмеричные и двоичные числа:
+Восемь функций для чисел без знака. Эти функции можно использовать десятичные, шестнадцатеричные, восьмеричные и двоичные числа. Данные функции не должны содержать ведущие нули для десятеричной системы счисления:
 - function __sc_StrToByte__(const Str: String; out Value: Byte): Boolean;
 - function __s_StrToByte__(const Str: String): Byte;
 - function __sc_StrToWord__(const Str: String; out Value: Word): Boolean;
