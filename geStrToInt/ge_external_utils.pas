@@ -423,7 +423,8 @@ begin
   if lenStr = 0 then
     exit;
   m := Byte(Str[1]);
-
+  i := 1;
+  
 loopZero:
   if m = 48 then
   begin
@@ -447,7 +448,6 @@ loopZero:
   useParametr := @allUIntParametr[Size];
   if lenStr > useParametr^.maxLen then
     Exit;
-  i := 2;
   while i < lenStr do
   begin
     n := (Byte(Str[i]) - 48);
