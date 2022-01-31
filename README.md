@@ -13,6 +13,8 @@ project.
 **ge_external_utils.pas** - a module that provides all the functions for translating strings into numbers. The main information with comments is contained
 in the module.
 
+**Attention!** This library is aimed at the speed of translating strings into numbers! As well as compatibility with different architectures. :) But it only handles numbers, "-" sign (minus) and prefixes for hexadecimal, octal and binary systems. All other characters will be ignored, in which case all functions will give incorrect results (even if you just put a space before the number).
+
 **License**
 - __Zlib__.
 
@@ -66,6 +68,14 @@ system under which you are doing this allow it (mostly it depends on the compile
 With a strong desire (if you so desire), you can declare your data and work with it. Procedures should not depend on the bitness of the system at all, so you
 can raise it even to infinity.
 
+The ability to select the type of strings you are working with has been added to the configuration file (in order not to lose speed when translating one type of strings into others):
+- {$DEFINE USE_STRING} - String
+- {$DEFINE USE_ANSISTRING} - AnsiString
+- {$DEFINE USE_UNICODESTRING} - UnicodeString
+- {$DEFINE USE_UTF8STRING} - UTF8String
+
+Define priority from top to bottom. If the upstream define is enabled, then the downstream ones are disabled.
+
 I express my deep gratitude to everyone who supported! And also to everyone who put sticks in the wheels, you also helped a lot! )))
 
 Communication: M12Mirrel@yandex.ru
@@ -81,6 +91,8 @@ If this project was useful to you, you can support me. Sberbank:
 демо версия с примерами использования. В проект включён основной модуль __ge_external_utils.pas__ и файл конфигурации.
 
 **ge_external_utils.pas** - модуль предоставляющий все функции по переводу строк в число. Основная информация с комментариями содержится в модуле.
+
+**Внимание!** Данная библиотека нацелена на скорость перевода строк в число! А так же на совместимость с разными архитектурами. :) Но обрабатывает она только числа, знак "-" (минус) и префиксы для шестнадцатеричной, восмеричной и двоичной систем. Все остальные символы будут игнорированы и в этом случае все функции будут выдавать не верный результат (даже если вы просто поставите пробел перед числом).
 
 **Лицензия**
 - __Zlib__.
@@ -135,6 +147,14 @@ If this project was useful to you, you can support me. Sberbank:
 В модуле можно поднять уровень текущей архитектуры (UP_CPU в начале модуля). Но вы должны знать, что это позволяет и компилятор и система под которую вы это
 делаете (в основном от компилятора зависит). Для 64-х битной системы поднять уровень нельзя на данный момент. При сильном желании (если так хотите) можно,
 объявите свои данные и работайте с ними. Процедуры вообще не должны зависеть от разрядности системы, поэтому можно поднимать хоть до бесконечности.
+
+В файл конфигурации добавлена возможность выбора вида строк с которыми работаете (для того чтоб не потерять в скорости при переводе одного вида строк в другие):
+- {$DEFINE USE_STRING} - String
+- {$DEFINE USE_ANSISTRING} - AnsiString
+- {$DEFINE USE_UNICODESTRING} - UnicodeString
+- {$DEFINE USE_UTF8STRING} - UTF8String
+
+Приоритет дефайнов сверху вниз. Если вышестоящий дефайн включен, то нижестоящие отключаться.
 
 Выражаю огромную благодарность всем, кто поддержал! А так же всем, кто вставлял палки в колёса, вы тоже сильно помогли! )))
 
