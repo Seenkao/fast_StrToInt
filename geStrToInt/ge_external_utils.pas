@@ -89,16 +89,28 @@ type
   maxIntVal = Int64;
   maxUIntVal = QWord;
   {$EndIf}
+  {$IfDef USE_STRING}
+  useString = String;
+  {$EndIf}
+  {$IfDef USE_ANSISTRING}
+  useString = AnsiString;
+  {$EndIf}
+  {$IfDef USE_UNICODESTRING}
+  useString = UnicodeString;
+  {$EndIf}
+  {$IfDef USE_UTF8STRING}
+  useString = UTF8String;
+  {$EndIf} 
 
 // Rus: эта функция для десятичных чисел со знаком.
 // Eng: this function is for signed decimal numbers.
-function geStrToInt(const Str: String; out Value: maxIntVal; Size: LongWord = isInteger): Boolean;
+function geStrToInt(const Str: useString; out Value: maxIntVal; Size: LongWord = isInteger): Boolean;
 // Rus: эта функция только для десятичных чисел без знака!!!
 // Eng: this function is only for unsigned decimal numbers!!!
-function geStrToUInt(const Str: String; out Value: maxUIntVal; Size: LongWord = isLongWord): Boolean;
+function geStrToUInt(const Str: useString; out Value: maxUIntVal; Size: LongWord = isLongWord): Boolean;
 // Rus: для работы с шестнадцатеричными, восьмеричными и двоичными данными.
 // Eng: for working with hexadecimal, octal and binary data.
-function geHOBStrToUInt(const Str: String; out Value: maxUIntVal; Size: LongWord = isQWord): Boolean;
+function geHOBStrToUInt(const Str: useString; out Value: maxUIntVal; Size: LongWord = isQWord): Boolean;
 
 (* Rus: Ниже реализованы стандартные функции для перевода строк в число. Их
  *      использование будет проще для большинства. Функции отмечены префиксом.
@@ -119,19 +131,19 @@ function geHOBStrToUInt(const Str: String; out Value: maxUIntVal; Size: LongWord
 // Rus: Числа со знаком. Здесь нельзя использовать шестнадцатеричные, восьмеричные
 //      и двоичные числа.
 // Eng: Signed numbers. Hexadecimal, octal and binary numbers cannot be used here.
-function sc_StrToShortInt(const Str: String; out Value: ShortInt): Boolean; {$IfDef ADD_FAST}inline;{$EndIf}   // byte
-function s_StrToShortInt(const Str: String): ShortInt; {$IfDef ADD_FAST}inline;{$EndIf}                        // byte
+function sc_StrToShortInt(const Str: useString; out Value: ShortInt): Boolean; {$IfDef ADD_FAST}inline;{$EndIf}   // byte
+function s_StrToShortInt(const Str: useString): ShortInt; {$IfDef ADD_FAST}inline;{$EndIf}                        // byte
 {$IfDef USE_CPU16}
-function sc_StrToSmallInt(const Str: String; out Value: SmallInt): Boolean; {$IfDef ADD_FAST}inline;{$EndIf}   // word
-function s_StrToSmallInt(const Str: String): SmallInt; {$IfDef ADD_FAST}inline;{$EndIf}                        // word
+function sc_StrToSmallInt(const Str: useString; out Value: SmallInt): Boolean; {$IfDef ADD_FAST}inline;{$EndIf}   // word
+function s_StrToSmallInt(const Str: useString): SmallInt; {$IfDef ADD_FAST}inline;{$EndIf}                        // word
 {$EndIf}
 {$IfDef USE_CPU32}
-function sc_StrToInt(const Str: String; out Value: Integer): Boolean; {$IfDef ADD_FAST}inline;{$EndIf}
-function s_StrToInt(const Str: String): Integer; {$IfDef ADD_FAST}inline;{$EndIf}
+function sc_StrToInt(const Str: useString; out Value: Integer): Boolean; {$IfDef ADD_FAST}inline;{$EndIf}
+function s_StrToInt(const Str: useString): Integer; {$IfDef ADD_FAST}inline;{$EndIf}
 {$EndIf}
 {$IfDef USE_CPU64}
-function sc_StrToInt64(const Str: String; out Value: Int64): Boolean; {$IfDef ADD_FAST}inline;{$EndIf}
-function s_StrToInt64(const Str: String): Int64; {$IfDef ADD_FAST}inline;{$EndIf}
+function sc_StrToInt64(const Str: useString; out Value: Int64): Boolean; {$IfDef ADD_FAST}inline;{$EndIf}
+function s_StrToInt64(const Str: useString): Int64; {$IfDef ADD_FAST}inline;{$EndIf}
 {$EndIf}
 
 // Rus: Числа без знака. Эти функции могут использоваться и для шестнадцатеричныи
@@ -140,19 +152,19 @@ function s_StrToInt64(const Str: String): Int64; {$IfDef ADD_FAST}inline;{$EndIf
 // Eng: Numbers without a sign. These functions can be used for hexadecimal, octal
 //      and binary numbers as well. These functions must not contain leading zeros
 //      for the decimal number system.
-function sc_StrToByte(const Str: String; out Value: Byte): Boolean; {$IfDef ADD_FAST}inline;{$EndIf}
-function s_StrToByte(const Str: String): Byte; {$IfDef ADD_FAST}inline;{$EndIf}
+function sc_StrToByte(const Str: useString; out Value: Byte): Boolean; {$IfDef ADD_FAST}inline;{$EndIf}
+function s_StrToByte(const Str: useString): Byte; {$IfDef ADD_FAST}inline;{$EndIf}
 {$IfDef USE_CPU16}
-function sc_StrToWord(const Str: String; out Value: Word): Boolean; {$IfDef ADD_FAST}inline;{$EndIf}
-function s_StrToWord(const Str: String): Word; {$IfDef ADD_FAST}inline;{$EndIf}
+function sc_StrToWord(const Str: useString; out Value: Word): Boolean; {$IfDef ADD_FAST}inline;{$EndIf}
+function s_StrToWord(const Str: useString): Word; {$IfDef ADD_FAST}inline;{$EndIf}
 {$EndIf}
 {$IfDef USE_CPU32}
-function sc_StrToLongWord(const Str: String; out Value: LongWord): Boolean; {$IfDef ADD_FAST}inline;{$EndIf}
-function s_StrToLongWord(const Str: String): LongWord; {$IfDef ADD_FAST}inline;{$EndIf}
+function sc_StrToLongWord(const Str: useString; out Value: LongWord): Boolean; {$IfDef ADD_FAST}inline;{$EndIf}
+function s_StrToLongWord(const Str: useString): LongWord; {$IfDef ADD_FAST}inline;{$EndIf}
 {$EndIf}
 {$IfDef USE_CPU64}
-function sc_StrToQWord(const Str: String; out Value: QWord): Boolean; {$IfDef ADD_FAST}inline;{$EndIf}
-function s_StrToQWord(const Str: String): QWord; {$IfDef ADD_FAST}inline;{$EndIf}
+function sc_StrToQWord(const Str: useString; out Value: QWord): Boolean; {$IfDef ADD_FAST}inline;{$EndIf}
+function s_StrToQWord(const Str: useString): QWord; {$IfDef ADD_FAST}inline;{$EndIf}
 {$EndIf}
 
 implementation
@@ -237,7 +249,7 @@ begin
   {$EndIf}
 end;
 
-function sc_StrToShortInt(const Str: String; out Value: ShortInt): Boolean;
+function sc_StrToShortInt(const Str: useString; out Value: ShortInt): Boolean;
 var
   n: maxIntVal;
 begin
@@ -245,7 +257,7 @@ begin
   Value := n;
 end;
 
-function s_StrToShortInt(const Str: String): ShortInt;
+function s_StrToShortInt(const Str: useString): ShortInt;
 var
   n: maxIntVal;
 begin
@@ -254,7 +266,7 @@ begin
 end;
 
 {$IfDef USE_CPU16}
-function sc_StrToSmallInt(const Str: String; out Value: SmallInt): Boolean;
+function sc_StrToSmallInt(const Str: useString; out Value: SmallInt): Boolean;
 var
   n: maxIntVal;
 begin
@@ -262,7 +274,7 @@ begin
   Value := n;
 end;
 
-function s_StrToSmallInt(const Str: String): SmallInt;
+function s_StrToSmallInt(const Str: useString): SmallInt;
 var
   n: maxIntVal;
 begin
@@ -272,7 +284,7 @@ end;
 {$EndIf}
 
 {$IfDef USE_CPU32}
-function sc_StrToInt(const Str: String; out Value: Integer): Boolean;
+function sc_StrToInt(const Str: useString; out Value: Integer): Boolean;
 var
   n: maxIntVal;
 begin
@@ -280,7 +292,7 @@ begin
   Value := n;
 end;
 
-function s_StrToInt(const Str: String): Integer;
+function s_StrToInt(const Str: useString): Integer;
 var
   n: maxIntVal;
 begin
@@ -290,19 +302,19 @@ end;
 {$EndIf}
 
 {$IfDef USE_CPU64}
-function sc_StrToInt64(const Str: String; out Value: Int64): Boolean;
+function sc_StrToInt64(const Str: useString; out Value: Int64): Boolean;
 begin
   Result := geStrToInt(Str, Value, isInt64);
 end;
 
-function s_StrToInt64(const Str: String): Int64;
+function s_StrToInt64(const Str: useString): Int64;
 begin
   geStrToInt(Str, Result, isInt64);
 end;
 
 {$EndIf}
 
-function sc_StrToByte(const Str: String; out Value: Byte): Boolean;
+function sc_StrToByte(const Str: useString; out Value: Byte): Boolean;
 var
   n: maxUIntVal;
 begin
@@ -314,7 +326,7 @@ begin
   Value := n;
 end;
 
-function s_StrToByte(const Str: String): Byte;
+function s_StrToByte(const Str: useString): Byte;
 var
   n: maxUIntVal;
 begin
@@ -327,7 +339,7 @@ begin
 end;
 
 {$IfDef USE_CPU16}
-function sc_StrToWord(const Str: String; out Value: Word): Boolean;
+function sc_StrToWord(const Str: useString; out Value: Word): Boolean;
 var
   n: maxUIntVal;
 begin
@@ -339,7 +351,7 @@ begin
   Value := n;
 end;
 
-function s_StrToWord(const Str: String): Word;
+function s_StrToWord(const Str: useString): Word;
 var
   n: maxUIntVal;
 begin
@@ -353,7 +365,7 @@ end;
 {$EndIf}
 
 {$IfDef USE_CPU32}
-function sc_StrToLongWord(const Str: String; out Value: LongWord): Boolean;
+function sc_StrToLongWord(const Str: useString; out Value: LongWord): Boolean;
 var
   n: maxUIntVal;
 begin
@@ -365,7 +377,7 @@ begin
   Value := n;
 end;
 
-function s_StrToLongWord(const Str: String): LongWord;
+function s_StrToLongWord(const Str: useString): LongWord;
 var
   n: maxUIntVal;
 begin
@@ -379,7 +391,7 @@ end;
 {$EndIf}
 
 {$IfDef USE_CPU64}
-function sc_StrToQWord(const Str: String; out Value: QWord): Boolean;
+function sc_StrToQWord(const Str: useString; out Value: QWord): Boolean;
 var
   n: maxUIntVal;
 begin
@@ -390,7 +402,7 @@ begin
     Result := geStrToUInt(Str, Value, isQWord);
 end;
 
-function s_StrToQWord(const Str: String): QWord;
+function s_StrToQWord(const Str: useString): QWord;
 var
   n: maxUIntVal;
 begin
@@ -402,7 +414,7 @@ begin
 end;
 {$EndIf}
 
-function geStrToUInt(const Str: String; out Value: maxUIntVal; Size: LongWord = isLongWord): Boolean;
+function geStrToUInt(const Str: useString; out Value: maxUIntVal; Size: LongWord = isLongWord): Boolean;
 var
   lenStr, i: maxUIntVal;
   m, n, z: maxUIntVal;
@@ -423,7 +435,7 @@ begin
   if lenStr = 0 then
     exit;
   m := Byte(Str[1]);
-  i := 1;
+  i := 2;
   
 loopZero:
   if m = 48 then
@@ -472,7 +484,7 @@ loopZero:
   {$pop}
 end;
 
-function geHOBStrToUInt(const Str: String; out Value: maxUIntVal; Size: LongWord = isQWord): Boolean;
+function geHOBStrToUInt(const Str: useString; out Value: maxUIntVal; Size: LongWord = isQWord): Boolean;
 var
   lenStr, i: maxUIntVal;
   m, n, nshl, z: maxUIntVal;
@@ -606,7 +618,7 @@ loopZero:
   {$pop}
 end;
 
-function geStrToInt(const Str: String; out Value: maxIntVal; Size: LongWord = isInteger): Boolean;
+function geStrToInt(const Str: useString; out Value: maxIntVal; Size: LongWord = isInteger): Boolean;
 var
   lenStr, i: maxUIntVal;
   m, n, z: maxUIntVal;
