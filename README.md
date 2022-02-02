@@ -13,7 +13,7 @@ project.
 **ge_external_utils.pas** - a module that provides all the functions for translating strings into numbers. The main information with comments is contained
 in the module.
 
-**Attention!** This library is aimed at the speed of translating strings into numbers! As well as compatibility with different architectures. :) But it only handles numbers, "-" sign (minus) and prefixes for hexadecimal, octal and binary systems. All other characters will be ignored, in which case all functions will give incorrect results (even if you just put a space before the number).
+**Attention!** This library is aimed at the speed of translating strings into numbers! For compatibility with different architectures. And also to minimize the final code. :) But it only handles numbers, "-" sign (minus) and prefixes for hexadecimal, octal and binary systems. All other characters will be ignored, in which case all functions will give incorrect results (even if you just put a space before the number).
 
 **License**
 - __Zlib__.
@@ -92,7 +92,7 @@ If this project was useful to you, you can support me. Sberbank:
 
 **ge_external_utils.pas** - модуль предоставляющий все функции по переводу строк в число. Основная информация с комментариями содержится в модуле.
 
-**Внимание!** Данная библиотека нацелена на скорость перевода строк в число! А так же на совместимость с разными архитектурами. :) Но обрабатывает она только числа, знак "-" (минус) и префиксы для шестнадцатеричной, восмеричной и двоичной систем. Все остальные символы будут игнорированы и в этом случае все функции будут выдавать не верный результат (даже если вы просто поставите пробел перед числом).
+**Внимание!** Данная библиотека нацелена на скорость перевода строк в число! На совместимость с разными архитектурами. А так же для минимизации конечного кода. :) Но обрабатывает она только числа, знак "-" (минус) и префиксы для шестнадцатеричной, восмеричной и двоичной систем. Все остальные символы будут игнорированы и в этом случае все функции будут выдавать не верный результат (даже если вы просто поставите пробел перед числом).
 
 **Лицензия**
 - __Zlib__.
