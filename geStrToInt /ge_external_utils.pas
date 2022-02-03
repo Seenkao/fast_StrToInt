@@ -216,6 +216,7 @@ function s_StrToQWord(const Str: UnicodeString): QWord; {$IfDef ADD_FAST}inline;
 {$EndIf}
 
 implementation
+{$Goto on}
 
 const
   dataHex: array[0..54] of Byte = (  0,  1,  2,  3,  4,  5,  6,  7,  8,  9, 16, 16, 16, 16, 16, 16,
