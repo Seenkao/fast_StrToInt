@@ -28,16 +28,6 @@
 //      there have been no problems.
 
 unit ge_external_Utils;
-// Rus: этот дефайн UP_CPU повышает уровень используемых значений. Точнее для
-//      CPU16 вы сможете использовать 32-х битные значения. Вы должны знать
-//      может система (компилятор) использовать эти значения или нет.
-//      Для 64-х битных систем не будет работать на данное время.
-// Eng: this UP_CPU define raises the level of values used. More precisely, for
-//      CPU16 you can use 32-bit values. You need to know whether the system
-//      (compiler) can use these values or not.
-//      Will not work for 64-bit systems at this time.
-
-{.$Define UP_CPU}
 {$I def_stringtovalue.cfg}
 
 interface
@@ -73,6 +63,8 @@ const
   {$EndIf}
 
 type
+  PmaxIntVal = ^maxIntVal;
+  PmaxUIntVal = ^maxUIntVal;
   {$IfDef CPU8}
   maxIntVal = {$IfNDef UP_CPU}ShortInt{$Else}SmallInt{$EndIf};
   maxUIntVal = {$IfNDef UP_CPU}Byte{$Else}Word{$EndIf};
@@ -95,22 +87,42 @@ type
   {$IfDef USE_ANSISTRING}
   useString = AnsiString;
   {$EndIf}
-  {$IfDef USE_UNICODESTRING}
-  useString = UnicodeString;
-  {$EndIf}
   {$IfDef USE_UTF8STRING}
   useString = UTF8String;
   {$EndIf} 
 
 // Rus: эта функция для десятичных чисел со знаком.
 // Eng: this function is for signed decimal numbers.
-function geStrToInt(const Str: useString; out Value: maxIntVal; Size: LongWord = isInteger): Boolean;
+{$IfNDef UNICODESTRING_ONLI}
+function geCharToInt(const aStr: array of Char; out Value: maxIntVal; Size: maxIntVal = maxSize): Boolean;
+function geStrToInt(const Str: useString; out Value: maxIntVal; Size: maxIntVal = maxSize): Boolean; inline;
+{$EndIf}
+{$IfDef USE_UNICODESTRING}
+function geWCharToInt(const aStr: array of WideChar; out Value: maxIntVal; Size: maxIntVal = maxSize): Boolean;
+function geStrToInt(const Str: UnicodeString; out Value: maxIntVal; Size: maxIntVal = maxSize): Boolean; inline;
+{$EndIf}
+
 // Rus: эта функция только для десятичных чисел без знака!!!
 // Eng: this function is only for unsigned decimal numbers!!!
-function geStrToUInt(const Str: useString; out Value: maxUIntVal; Size: LongWord = isLongWord): Boolean;
+{$IfNDef UNICODESTRING_ONLI}
+function geCharToUInt(const aStr: array of Char; out Value: maxUIntVal; Size: maxIntVal = maxSize): Boolean;
+function geStrToUInt(const Str: useString; out Value: maxUIntVal; Size: maxIntVal = maxSize): Boolean; inline;
+{$EndIf}
+{$IfDef USE_UNICODESTRING}
+function geWCharToUInt(const aStr: array of WideChar; out Value: maxUIntVal; Size: maxIntVal = maxSize): Boolean;
+function geStrToUInt(const Str: UnicodeString; out Value: maxUIntVal; Size: maxIntVal = maxSize): Boolean; inline;
+{$EndIf}
+
 // Rus: для работы с шестнадцатеричными, восьмеричными и двоичными данными.
 // Eng: for working with hexadecimal, octal and binary data.
-function geHOBStrToUInt(const Str: useString; out Value: maxUIntVal; Size: LongWord = isQWord): Boolean;
+{$IfNDef UNICODESTRING_ONLI}
+function geHOBCharToUInt(const aStr: array of Char; out Value: maxUIntVal; Size: maxIntVal = maxSize): Boolean;
+function geHOBStrToUInt(const Str: useString; out Value: maxUIntVal; Size: maxIntVal = maxSize): Boolean; inline;
+{$EndIf}
+{$IfDef USE_UNICODESTRING}
+function geHOBWCharToUInt(const aStr: array of WideChar; out Value: maxUIntVal; Size: maxIntVal = maxSize): Boolean;
+function geHOBStrToUInt(const Str: UnicodeString; out Value: maxUIntVal; Size: maxIntVal = maxSize): Boolean; inline;
+{$EndIf}
 
 (* Rus: Ниже реализованы стандартные функции для перевода строк в число. Их
  *      использование будет проще для большинства. Функции отмечены префиксом.
@@ -131,6 +143,7 @@ function geHOBStrToUInt(const Str: useString; out Value: maxUIntVal; Size: LongW
 // Rus: Числа со знаком. Здесь нельзя использовать шестнадцатеричные, восьмеричные
 //      и двоичные числа.
 // Eng: Signed numbers. Hexadecimal, octal and binary numbers cannot be used here.
+{$IfNDef UNICODESTRING_ONLI}
 function sc_StrToShortInt(const Str: useString; out Value: ShortInt): Boolean; {$IfDef ADD_FAST}inline;{$EndIf}   // byte
 function s_StrToShortInt(const Str: useString): ShortInt; {$IfDef ADD_FAST}inline;{$EndIf}                        // byte
 {$IfDef USE_CPU16}
@@ -145,6 +158,23 @@ function s_StrToInt(const Str: useString): Integer; {$IfDef ADD_FAST}inline;{$En
 function sc_StrToInt64(const Str: useString; out Value: Int64): Boolean; {$IfDef ADD_FAST}inline;{$EndIf}
 function s_StrToInt64(const Str: useString): Int64; {$IfDef ADD_FAST}inline;{$EndIf}
 {$EndIf}
+{$EndIf}
+{$IfDef USE_UNICODESTRING}
+function sc_StrToShortInt(const Str: UnicodeString; out Value: ShortInt): Boolean; {$IfDef ADD_FAST}inline;{$EndIf}   // byte
+function s_StrToShortInt(const Str: UnicodeString): ShortInt; {$IfDef ADD_FAST}inline;{$EndIf}                        // byte
+{$IfDef USE_CPU16}
+function sc_StrToSmallInt(const Str: UnicodeString; out Value: SmallInt): Boolean; {$IfDef ADD_FAST}inline;{$EndIf}   // word
+function s_StrToSmallInt(const Str: UnicodeString): SmallInt; {$IfDef ADD_FAST}inline;{$EndIf}                        // word
+{$EndIf}
+{$IfDef USE_CPU32}
+function sc_StrToInt(const Str: UnicodeString; out Value: Integer): Boolean; {$IfDef ADD_FAST}inline;{$EndIf}
+function s_StrToInt(const Str: UnicodeString): Integer; {$IfDef ADD_FAST}inline;{$EndIf}
+{$EndIf}
+{$IfDef USE_CPU64}
+function sc_StrToInt64(const Str: UnicodeString; out Value: Int64): Boolean; {$IfDef ADD_FAST}inline;{$EndIf}
+function s_StrToInt64(const Str: UnicodeString): Int64; {$IfDef ADD_FAST}inline;{$EndIf}
+{$EndIf}
+{$EndIf}
 
 // Rus: Числа без знака. Эти функции могут использоваться и для шестнадцатеричныи
 //      и восьмеричных и двоичных чисел. Данные функции не должны содержать
@@ -152,6 +182,7 @@ function s_StrToInt64(const Str: useString): Int64; {$IfDef ADD_FAST}inline;{$En
 // Eng: Numbers without a sign. These functions can be used for hexadecimal, octal
 //      and binary numbers as well. These functions must not contain leading zeros
 //      for the decimal number system.
+{$IfNDef UNICODESTRING_ONLI}
 function sc_StrToByte(const Str: useString; out Value: Byte): Boolean; {$IfDef ADD_FAST}inline;{$EndIf}
 function s_StrToByte(const Str: useString): Byte; {$IfDef ADD_FAST}inline;{$EndIf}
 {$IfDef USE_CPU16}
@@ -165,6 +196,23 @@ function s_StrToLongWord(const Str: useString): LongWord; {$IfDef ADD_FAST}inlin
 {$IfDef USE_CPU64}
 function sc_StrToQWord(const Str: useString; out Value: QWord): Boolean; {$IfDef ADD_FAST}inline;{$EndIf}
 function s_StrToQWord(const Str: useString): QWord; {$IfDef ADD_FAST}inline;{$EndIf}
+{$EndIf}
+{$EndIf}
+{$IfDef USE_UNICODESTRING}
+function sc_StrToByte(const Str: UnicodeString; out Value: Byte): Boolean; {$IfDef ADD_FAST}inline;{$EndIf}
+function s_StrToByte(const Str: UnicodeString): Byte; {$IfDef ADD_FAST}inline;{$EndIf}
+{$IfDef USE_CPU16}
+function sc_StrToWord(const Str: UnicodeString; out Value: Word): Boolean; {$IfDef ADD_FAST}inline;{$EndIf}
+function s_StrToWord(const Str: UnicodeString): Word; {$IfDef ADD_FAST}inline;{$EndIf}
+{$EndIf}
+{$IfDef USE_CPU32}
+function sc_StrToLongWord(const Str: UnicodeString; out Value: LongWord): Boolean; {$IfDef ADD_FAST}inline;{$EndIf}
+function s_StrToLongWord(const Str: UnicodeString): LongWord; {$IfDef ADD_FAST}inline;{$EndIf}
+{$EndIf}
+{$IfDef USE_CPU64}
+function sc_StrToQWord(const Str: UnicodeString; out Value: QWord): Boolean; {$IfDef ADD_FAST}inline;{$EndIf}
+function s_StrToQWord(const Str: UnicodeString): QWord; {$IfDef ADD_FAST}inline;{$EndIf}
+{$EndIf}
 {$EndIf}
 
 implementation
@@ -249,11 +297,27 @@ begin
   {$EndIf}
 end;
 
+{$IfNDef UNICODESTRING_ONLI}
+function geStrToInt(const Str: useString; out Value: maxIntVal; Size: maxIntVal = maxSize): Boolean; inline;
+begin
+  Result := geCharToInt(Str[1..Length(Str)], Value, Size);
+end;
+
+function geStrToUInt(const Str: useString; out Value: maxUIntVal; Size: maxIntVal = maxSize): Boolean; inline;
+begin
+  Result := geCharToUInt(Str[1..Length(Str)], Value, Size);
+end;
+
+function geHOBStrToUInt(const Str: useString; out Value: maxUIntVal; Size: maxIntVal = maxSize): Boolean; inline;
+begin
+  Result := geHOBCharToUInt(Str[1..Length(Str)], Value, Size);
+end;
+
 function sc_StrToShortInt(const Str: useString; out Value: ShortInt): Boolean;
 var
   n: maxIntVal;
 begin
-  Result := geStrToInt(Str, n, isShortInt);
+  Result := geCharToInt(Str[1..Length(Str)], n, isShortInt);
   Value := n;
 end;
 
@@ -261,7 +325,7 @@ function s_StrToShortInt(const Str: useString): ShortInt;
 var
   n: maxIntVal;
 begin
-  geStrToInt(Str, n, isShortInt);
+  geCharToInt(Str[1..Length(Str)], n, isShortInt);
   Result := n;
 end;
 
@@ -270,7 +334,7 @@ function sc_StrToSmallInt(const Str: useString; out Value: SmallInt): Boolean;
 var
   n: maxIntVal;
 begin
-  Result := geStrToInt(Str, n, isSmallInt);
+  Result := geCharToInt(Str[1..Length(Str)], n, isSmallInt);
   Value := n;
 end;
 
@@ -278,7 +342,7 @@ function s_StrToSmallInt(const Str: useString): SmallInt;
 var
   n: maxIntVal;
 begin
-  geStrToInt(Str, n, isSmallInt);
+  geCharToInt(Str[1..Length(Str)], n, isSmallInt);
   Result := n;
 end;
 {$EndIf}
@@ -288,7 +352,7 @@ function sc_StrToInt(const Str: useString; out Value: Integer): Boolean;
 var
   n: maxIntVal;
 begin
-  Result := geStrToInt(Str, n, isInteger);
+  Result := geCharToInt(Str[1..Length(Str)], n, isInteger);
   Value := n;
 end;
 
@@ -296,7 +360,7 @@ function s_StrToInt(const Str: useString): Integer;
 var
   n: maxIntVal;
 begin
-  geStrToInt(Str, n, isInteger);
+  geCharToInt(Str[1..Length(Str)], n, isInteger);
   Result := n;
 end;
 {$EndIf}
@@ -304,12 +368,12 @@ end;
 {$IfDef USE_CPU64}
 function sc_StrToInt64(const Str: useString; out Value: Int64): Boolean;
 begin
-  Result := geStrToInt(Str, Value, isInt64);
+  Result := geCharToInt(Str[1..Length(Str)], Value, isInt64);
 end;
 
 function s_StrToInt64(const Str: useString): Int64;
 begin
-  geStrToInt(Str, Result, isInt64);
+  geCharToInt(Str[1..Length(Str)], Result, isInt64);
 end;
 
 {$EndIf}
@@ -320,9 +384,9 @@ var
 begin
   n := Byte(Str[1]);
   if (n = 48) or ((n >= 36) and (n <= 38)) then
-    Result := geHOBStrToUInt(str, n, isByte)
+    Result := geHOBCharToUInt(Str[1..Length(Str)], n, isByte)
   else
-    Result := geStrToUInt(Str, n, isByte);
+    Result := geCharToUInt(Str[1..Length(Str)], n, isByte);
   Value := n;
 end;
 
@@ -332,9 +396,9 @@ var
 begin
   n := Byte(Str[1]);
   if (n = 48) or ((n >= 36) and (n <= 38)) then
-    geHOBStrToUInt(str, n, isByte)
+    geHOBCharToUInt(Str[1..Length(Str)], n, isByte)
   else
-    geStrToUInt(Str, n, isByte);
+    geCharToUInt(Str[1..Length(Str)], n, isByte);
   Result := n;
 end;
 
@@ -345,9 +409,9 @@ var
 begin
   n := Byte(Str[1]);
   if (n = 48) or ((n >= 36) and (n <= 38)) then
-    Result := geHOBStrToUInt(str, n, isWord)
+    Result := geHOBCharToUInt(Str[1..Length(Str)], n, isWord)
   else
-    Result := geStrToUInt(Str, n, isWord);
+    Result := geCharToUInt(Str[1..Length(Str)], n, isWord);
   Value := n;
 end;
 
@@ -357,9 +421,9 @@ var
 begin
   n := Byte(Str[1]);
   if (n = 48) or ((n >= 36) and (n <= 38)) then
-    geHOBStrToUInt(str, n, isWord)
+    geHOBCharToUInt(Str[1..Length(Str)], n, isWord)
   else
-    geStrToUInt(Str, n, isWord);
+    geCharToUInt(Str[1..Length(Str)], n, isWord);
   Result := n;
 end;
 {$EndIf}
@@ -371,9 +435,9 @@ var
 begin
   n := Byte(Str[1]);
   if (n = 48) or ((n >= 36) and (n <= 38)) then
-    Result := geHOBStrToUInt(str, n, isLongWord)
+    Result := geHOBCharToUInt(Str[1..Length(Str)], n, isLongWord)
   else
-    Result := geStrToUInt(Str, n, isLongWord);
+    Result := geCharToUInt(Str[1..Length(Str)], n, isLongWord);
   Value := n;
 end;
 
@@ -383,9 +447,9 @@ var
 begin
   n := Byte(Str[1]);
   if (n = 48) or ((n >= 36) and (n <= 38)) then
-    geHOBStrToUInt(str, n, isLongWord)
+    geHOBCharToUInt(Str[1..Length(Str)], n, isLongWord)
   else
-    geStrToUInt(Str, n, isLongWord);
+    geCharToUInt(Str[1..Length(Str)], n, isLongWord);
   Result := n;
 end;
 {$EndIf}
@@ -397,9 +461,9 @@ var
 begin
   n := Byte(Str[1]);
   if (n = 48) or ((n >= 36) and (n <= 38)) then
-    Result := geHOBStrToUInt(str, Value, isQWord)
+    Result := geHOBCharToUInt(Str[1..Length(Str)], Value, isQWord)
   else
-    Result := geStrToUInt(Str, Value, isQWord);
+    Result := geCharToUInt(Str[1..Length(Str)], Value, isQWord);
 end;
 
 function s_StrToQWord(const Str: useString): QWord;
@@ -408,72 +472,67 @@ var
 begin
   n := Byte(Str[1]);
   if (n = 48) or ((n >= 36) and (n <= 38)) then
-    geHOBStrToUInt(str, Result, isQWord)
+    geHOBCharToUInt(Str[1..Length(Str)], Result, isQWord)
   else
-    geStrToUInt(Str, Result, isQWord);
+    geCharToUInt(Str[1..Length(Str)], Result, isQWord);
 end;
 {$EndIf}
 
-function geStrToUInt(const Str: useString; out Value: maxUIntVal; Size: LongWord = isLongWord): Boolean;
+function geCharToUInt(const aStr: array of Char; out Value: maxUIntVal; Size: maxIntVal = maxSize): Boolean;
 var
   lenStr, i: maxUIntVal;
   m, n, z: maxUIntVal;
   useParametr: PgeUseParametr;
   correct: maxUIntVal = 0;
-label
-  loopZero;
 begin
   {$push}
   {$Q-}{$R-}
-  // Rus: значение нуль, результат функции - False.
-  // Eng: the value is zero, the result of the function is False.
   Result := False;
   Value := 0;
   if Size > maxSize then
     Exit;
-  lenStr := Length(Str);
+  lenStr := Length(aStr);
   if lenStr = 0 then
     exit;
-  m := Byte(Str[1]);
-  i := 2;
-  
-loopZero:
-  if m = 48 then
+  m := Byte(aStr[0]);
+  i := 1;
+
+  while m = 48 do
   begin
+    if (lenStr - correct) = 1 then
+    begin
+      Result := True;
+      exit;
+    end;
+    m := Byte(aStr[i]);
     inc(i);
     inc(correct);
-    m := Byte(Str[i]);
-    goto loopZero;
   end;
     
   m := m - 48;
-  // Rus: если значение не входит в пределы 0..9 - выходим
-  // Eng: if the value is outside the range 0..9 - exit
   if m > 9 then
     exit;
-  if (lenStr = 1) and (m = 0) then
+  if (lenStr - correct) = 1 then
   begin
-    Result := True;
-    exit;
+    Value := m;
+    Result := true;
+    Exit;
   end;
-
   useParametr := @allUIntParametr[Size];
   if lenStr > useParametr^.maxLen then
     Exit;
-  while i < lenStr do
+  while i < lenStr - 1 do
   begin
-    n := (Byte(Str[i]) - 48);
+    n := (Byte(aStr[i]) - 48);
     if n > 9 then
       Exit;
     m := m * 10 + n;
     inc(i);
   end;
-  // Rus: Если уже превысили значение, то выходим
-  // Eng: If you have already exceeded the value, then exit
   if m > useParametr^.maxNumDiv10 then
     exit;
   m := m * 10;
-  z := Byte(Str[i]) - 48;
+  z := Byte(aStr[i]) - 48;
   if z > 9 then
     exit;
   n := useParametr^.maxNumeric - m;
@@ -484,14 +543,13 @@ loopZero:
   {$pop}
 end;
 
-function geHOBStrToUInt(const Str: useString; out Value: maxUIntVal; Size: LongWord = isQWord): Boolean;
+function geHOBCharToUInt(const aStr: array of Char; out Value: maxUIntVal; Size: maxIntVal = maxSize): Boolean;
 var
   lenStr, i: maxUIntVal;
   m, n, nshl, z: maxUIntVal;
+  Pnshl: PmaxUIntVal;
   correct: maxUIntVal = 0;
   useParametr: PgeHOBParameter;
-label
-  loopZero;
 begin
   {$push}
   {$Q-}{$R-}
@@ -499,24 +557,13 @@ begin
   Value := 0;
   if Size > maxSize then
     exit;
-  lenStr := Length(Str);
+  lenStr := Length(aStr);
   if lenStr = 0 then
     exit;
-
-  // первые значения влияют на рабочий код. Потому что здесь будут использоваться
-  // и шестнадцатеричные и восьмеричные и двоичные значения.
-  // Числа надо обрабатывать соответственно $(0x) - шестнадцатеричный,
-  // %(0b) - двоичный, &(0, 0o) - восьмеричный
-  // Так же учитываем при работе с не десятичными числами, что перед ними идут
-  // дополнительные значения, а значит длина их должна быть больше на 1 или 2.
-  // Выставляю на 1 больше, что означает, что при первом нуле, вероятно надо
-  // будет указать ещё дополнительную длину.
-
-  // Rus: здесь обработка первого символа, который указывает на систему счисления.
-  // Eng: here processing the first character, which indicates the number system.
-  m := Byte(Str[1]);
-  n := Byte(Str[2]);
-  i := 2;
+    
+  m := Byte(aStr[0]);
+  n := Byte(aStr[1]);
+  i := 1;
   if m = 48 then
   begin
     if n > 97 then
@@ -525,7 +572,7 @@ begin
     if (n = 66) or (n = 88) or (n = 79) then
     begin
       correct := 1;
-      i := 3;
+      i := 2;
       if n = 66 then
       begin
         m := 37;
@@ -533,35 +580,36 @@ begin
       else
         if n = 88 then
           m := 36;
-      n := Byte(Str[3]);
+      n := Byte(aStr[2]);
     end;
   end;
 
-loopZero:
-  if n = 48 then
+  while n = 48 do
   begin
+    if (lenStr - correct) = 1 then
+    begin
+      Result := True;
+      exit;
+    end;
     inc(i);
     inc(correct);
-    n := Byte(Str[i]);
-    goto loopZero;
+    n := Byte(aStr[i]);
   end;    
 
   n := n - 48;
   useParametr := @allHOBParametr[Size];
-  // Rus: проверим предел для восьмеричной системы.
-  // Eng: check the limit for the octal system.
   if m = 38 then
   begin
     if (lenStr - correct) > useParametr^.maxLen8 then
       exit;
-    if useParametr^.maxLen8 = (lenStr - correct) then       // предельная длина
+    if useParametr^.maxLen8 = (lenStr - correct) then
       if (Size = isByte) or (Size = isLongWord) then
       begin
-        if n > 3 then                                   // max 3
+        if n > 3 then
           exit;
       end
       else
-        if n > 1 then                                   // max 1
+        if n > 1 then
           exit;
     nshl := 3;
     z := 7;
@@ -569,24 +617,20 @@ loopZero:
   else
     if m = 37 then
     begin
-      // Rus: для двоичной системы.
-      // Eng: for a binary system.
       if (lenStr - correct) > useParametr^.maxLen2 then
         exit;
       nshl := 1;
       z := 1;
     end;
-  // Rus: вычисляем шестнадцатеричное число.
-  // Eng: calculate a hexadecimal number.
   if m = 36 then
   begin
     if (lenStr - correct) > useParametr^.maxLen16 then
       exit;
     m := 0;
-    while i <= lenStr do
+    while i <= lenStr - 1 do
     begin
-      m := m shl 4;       // возможно ли что это место выдаст когда-нибудь ошибку?
-      n := Byte(Str[i]) - 48;
+      m := m shl 4;
+      n := Byte(aStr[i]) - 48;
       if n > 55 then
         exit;
       n := dataHex[n];
@@ -596,17 +640,16 @@ loopZero:
       inc(i);
     end;
   end
-  // Rus: вычисляем двоичное или восьмеричное число.
-  // Eng: calculate a binary or octal number.
   else begin
+    Pnshl := @nshl;
     m := n;
     if m > z then
       exit;
     inc(i);
-    while i <= lenStr do
+    while i <= lenStr - 1 do
     begin
-      m := m shl nshl;
-      n := Byte(Str[i]) - 48;
+      m := m shl Pnshl^;
+      n := Byte(aStr[i]) - 48;
       if n > z then
         exit;
       m := m + n;
@@ -618,92 +661,77 @@ loopZero:
   {$pop}
 end;
 
-function geStrToInt(const Str: useString; out Value: maxIntVal; Size: LongWord = isInteger): Boolean;
+function geCharToInt(const aStr: array of char; out Value: maxIntVal; Size: maxIntVal = maxSize): Boolean;
 var
   lenStr, i: maxUIntVal;
   m, n, z: maxUIntVal;
   useParametr: PgeUseParametr;
-  IntMinus: Boolean;
+  IntMinus: Boolean = False;
   correct: maxUIntVal = 0;
 label
-  jmpEndStr, loopZero;
+  jmpEndStr;
 begin
   {$push}
   {$Q-}{$R-}
-  // Rus: значение нуль, результат функции - False.
-  // Eng: the value is zero, the result of the function is False.
   Result := False;
   Value := 0;
   if Size > maxSize then
     Exit;
-  // Rus: флаг изначально указан, что не действителен.
-  // Eng: the flag is initially specified, which is not valid.
-  IntMinus := False;
-  lenStr := Length(Str);
+
+  lenStr := Length(aStr);
   if lenStr = 0 then
     exit;
-  i := 1;
-  m := Byte(Str[i]);
 
-  if (lenStr = 1) and (m = 48) then
-  begin
-    Result := True;
-    exit;
-  end;
-  // Rus: если рассматриваем отридцательные тоже, то проверяем знак
-  // Eng: if we consider negative ones too, then we check the sign
+  m := Byte(aStr[0]);
+
+  i := 1;
   if m = 45 then
   begin
     if lenStr = 1 then
       exit;
     IntMinus := True;
+    m := Byte(aStr[i]);
     inc(i);
-    m := Byte(Str[2]);
   end;
 
-loopZero:
-  if m = 48 then
+  while m = 48 do
   begin
+    if (lenStr - correct) = 1 then
+    begin
+      Result := True;
+      exit;
+    end;
+    m := Byte(aStr[i]);
     inc(i);
     inc(correct);
-    m := Byte(Str[i]);
-    goto loopZero;
   end;
-  
-  inc(i);
+
   m := m - 48;
-  // Rus: если значение не входит в пределы 0..9 - выходим
-  // Eng: if the value is outside the range 0..9 - exit
   if m > 9 then
     exit;
 
   useParametr := @allIntParametr[Size];
-  // Rus: момент, когда длина на один символ (символ + знак)
-  // Eng: moment when the length is one character (symbol + sign)
-  if i > lenStr then
+  if i > lenStr - 1 then
   begin
     z := 0;
     goto jmpEndStr;
   end;
-  // Rus: проверяем длину для данной размерности.
-  // Eng: check the length for a given dimension.
+  
   if (lenStr - correct) > useParametr^.maxLen then
     Exit;
-  while i < lenStr do
+  while i < lenStr - 1 do
   begin
-    n := (Byte(Str[i]) - 48);
+    n := (Byte(aStr[i]) - 48);
     if n > 9 then
       Exit;
     m := m * 10 + n;
     inc(i);
   end;
 
-  // Rus: Если уже превысили значение, то выходим
-  // Eng: If you have already exceeded the value, then exit
   if m > useParametr^.maxNumDiv10 then
     exit;
   m := m * 10;
-  z := Byte(Str[i]) - 48;
+  z := Byte(aStr[i]) - 48;
   if z > 9 then
     exit;
 
@@ -722,10 +750,470 @@ jmpEndStr:
   Result := true;
   {$pop}
 end;
+{$EndIf}
+
+{$IfDef USE_UNICODESTRING}
+function geStrToInt(const Str: UnicodeString; out Value: maxIntVal; Size: maxIntVal = maxSize): Boolean; inline;
+begin
+  Result := geWCharToInt(Str[1..Length(Str)], Value, Size);
+end;
+
+function geStrToUInt(const Str: UnicodeString; out Value: maxUIntVal; Size: maxIntVal = maxSize): Boolean; inline;
+begin
+  Result := geWCharToUInt(Str[1..Length(Str)], Value, Size);;
+end;
+
+function geHOBStrToUInt(const Str: UnicodeString; out Value: maxUIntVal; Size: maxIntVal = maxSize): Boolean; inline;
+begin
+  Result := geHOBWCharToUInt(Str[1..Length(Str)], Value, Size);
+end;
+
+function sc_StrToShortInt(const Str: UnicodeString; out Value: ShortInt): Boolean; {$IfDef ADD_FAST}inline;{$EndIf}   // byte
+var
+  n: maxIntVal;
+begin
+  Result := geWCharToInt(Str[1..Length(Str)], n, isShortInt);
+  Value := n;
+end;
+
+function s_StrToShortInt(const Str: UnicodeString): ShortInt; {$IfDef ADD_FAST}inline;{$EndIf}                        // byte
+var
+  n: maxIntVal;
+begin
+  geWCharToInt(Str[1..Length(Str)], n, isShortInt);
+  Result := n;
+end;
+{$IfDef USE_CPU16}
+function sc_StrToSmallInt(const Str: UnicodeString; out Value: SmallInt): Boolean; {$IfDef ADD_FAST}inline;{$EndIf}   // word
+var
+  n: maxIntVal;
+begin
+  Result := geWCharToInt(Str[1..Length(Str)], n, isSmallInt);
+  Value := n;
+end;
+
+function s_StrToSmallInt(const Str: UnicodeString): SmallInt; {$IfDef ADD_FAST}inline;{$EndIf}                        // word
+var
+  n: maxIntVal;
+begin
+  geWCharToInt(Str[1..Length(Str)], n, isSmallInt);
+  Result := n;
+end;
+{$EndIf}
+{$IfDef USE_CPU32}
+function sc_StrToInt(const Str: UnicodeString; out Value: Integer): Boolean; {$IfDef ADD_FAST}inline;{$EndIf}
+var
+  n: maxIntVal;
+begin
+  Result := geWCharToInt(Str[1..Length(Str)], n, isInteger);
+  Value := n;
+end;
+
+function s_StrToInt(const Str: UnicodeString): Integer; {$IfDef ADD_FAST}inline;{$EndIf}
+var
+  n: maxIntVal;
+begin
+  geWCharToInt(Str[1..Length(Str)], n, isInteger);
+  Result := n;
+end;
+{$EndIf}
+{$IfDef USE_CPU64}
+function sc_StrToInt64(const Str: UnicodeString; out Value: Int64): Boolean; {$IfDef ADD_FAST}inline;{$EndIf}
+begin
+  Result := geWCharToInt(Str[1..Length(Str)], Value, isInt64);
+end;
+
+function s_StrToInt64(const Str: UnicodeString): Int64; {$IfDef ADD_FAST}inline;{$EndIf}
+begin
+  geWCharToInt(Str[1..Length(Str)], Result, isInt64);
+end;
+{$EndIf}
+
+function sc_StrToByte(const Str: UnicodeString; out Value: Byte): Boolean; {$IfDef ADD_FAST}inline;{$EndIf}
+var
+  n: maxUIntVal;
+begin
+  n := Byte(Str[1]);
+  if (n = 48) or ((n >= 36) and (n <= 38)) then
+    Result := geHOBWCharToUInt(Str[1..Length(Str)], n, isByte)
+  else
+    Result := geWCharToUInt(Str[1..Length(Str)], n, isByte);
+  Value := n;
+end;
+
+function s_StrToByte(const Str: UnicodeString): Byte; {$IfDef ADD_FAST}inline;{$EndIf}
+var
+  n: maxUIntVal;
+begin
+  n := Byte(Str[1]);
+  if (n = 48) or ((n >= 36) and (n <= 38)) then
+    geHOBWCharToUInt(Str[1..Length(Str)], n, isByte)
+  else
+    geWCharToUInt(Str[1..Length(Str)], n, isByte);
+  Result := n;
+end;
+{$IfDef USE_CPU16}
+function sc_StrToWord(const Str: UnicodeString; out Value: Word): Boolean; {$IfDef ADD_FAST}inline;{$EndIf}
+var
+  n: maxUIntVal;
+begin
+  n := Byte(Str[1]);
+  if (n = 48) or ((n >= 36) and (n <= 38)) then
+    Result := geHOBWCharToUInt(Str[1..Length(Str)], n, isWord)
+  else
+    Result := geWCharToUInt(Str[1..Length(Str)], n, isWord);
+  Value := n;
+end;
+
+function s_StrToWord(const Str: UnicodeString): Word; {$IfDef ADD_FAST}inline;{$EndIf}
+var
+  n: maxUIntVal;
+begin
+  n := Byte(Str[1]);
+  if (n = 48) or ((n >= 36) and (n <= 38)) then
+    geHOBWCharToUInt(Str[1..Length(Str)], n, isWord)
+  else
+    geWCharToUInt(Str[1..Length(Str)], n, isWord);
+  Result := n;
+end;
+{$EndIf}
+{$IfDef USE_CPU32}
+function sc_StrToLongWord(const Str: UnicodeString; out Value: LongWord): Boolean; {$IfDef ADD_FAST}inline;{$EndIf}
+var
+  n: maxUIntVal;
+begin
+  n := Byte(Str[1]);
+  if (n = 48) or ((n >= 36) and (n <= 38)) then
+    Result := geHOBWCharToUInt(Str[1..Length(Str)], n, isLongWord)
+  else
+    Result := geWCharToUInt(Str[1..Length(Str)], n, isLongWord);
+  Value := n;
+end;
+
+function s_StrToLongWord(const Str: UnicodeString): LongWord; {$IfDef ADD_FAST}inline;{$EndIf}
+var
+  n: maxUIntVal;
+begin
+  n := Byte(Str[1]);
+  if (n = 48) or ((n >= 36) and (n <= 38)) then
+    geHOBWCharToUInt(Str[1..Length(Str)], n, isLongWord)
+  else
+    geWCharToUInt(Str[1..Length(Str)], n, isLongWord);
+  Result := n;
+end;
+{$EndIf}
+{$IfDef USE_CPU64}
+function sc_StrToQWord(const Str: UnicodeString; out Value: QWord): Boolean; {$IfDef ADD_FAST}inline;{$EndIf}
+var
+  n: maxUIntVal;
+begin
+  n := Byte(Str[1]);
+  if (n = 48) or ((n >= 36) and (n <= 38)) then
+    Result := geHOBWCharToUInt(Str[1..Length(Str)], Value, isQWord)
+  else
+    Result := geWCharToUInt(Str[1..Length(Str)], Value, isQWord);
+end;
+
+function s_StrToQWord(const Str: UnicodeString): QWord; {$IfDef ADD_FAST}inline;{$EndIf}
+var
+  n: maxUIntVal;
+begin
+  n := Byte(Str[1]);
+  if (n = 48) or ((n >= 36) and (n <= 38)) then
+    geHOBWCharToUInt(Str[1..Length(Str)], Result, isQWord)
+  else
+    geWCharToUInt(Str[1..Length(Str)], Result, isQWord);
+end;
+
+{$EndIf}
+
+function geWCharToUInt(const aStr: array of WideChar; out Value: maxUIntVal; Size: maxIntVal = maxSize): Boolean;
+var
+  lenStr, i: maxUIntVal;
+  m, n, z: maxUIntVal;
+  useParametr: PgeUseParametr;
+  correct: maxUIntVal = 0;
+begin
+  {$push}
+  {$Q-}{$R-}
+  Result := False;
+  Value := 0;
+  if Size > maxSize then
+    Exit;
+  lenStr := Length(aStr);
+  if lenStr = 0 then
+    exit;
+  m := Word(aStr[0]);
+
+  i := 0;
+
+  while m = 48 do
+  begin
+    if (lenStr - correct) = 1 then
+    begin
+      Result := True;
+      exit;
+    end;
+    m := Word(aStr[i]);
+    inc(i);
+    inc(correct);
+  end;
+
+  m := m - 48;
+  if m > 9 then
+    exit;
+  if (lenStr - correct) = 1 then
+  begin
+    Value := m;
+    Result := true;
+    Exit;
+  end;
+  useParametr := @allUIntParametr[Size];
+  if lenStr > useParametr^.maxLen then
+    Exit;
+  while i < lenStr - 1 do
+  begin
+    n := (Word(aStr[i]) - 48);
+    if n > 9 then
+      Exit;
+    m := m * 10 + n;
+    inc(i);
+  end;
+  if m > useParametr^.maxNumDiv10 then
+    exit;
+  m := m * 10;
+  z := Word(aStr[i]) - 48;
+  if z > 9 then
+    exit;
+  n := useParametr^.maxNumeric - m;
+  if z > n then
+    exit;
+  Value := m + z;
+  Result := true;
+  {$pop}
+end;
+
+function geHOBWCharToUInt(const aStr: array of WideChar; out Value: maxUIntVal; Size: maxIntVal = maxSize): Boolean;
+var
+  lenStr, i: maxUIntVal;
+  m, n, nshl, z: maxUIntVal;
+  Pnshl: PmaxUIntVal;
+  correct: maxUIntVal = 0;
+  useParametr: PgeHOBParameter;
+begin
+  {$push}
+  {$Q-}{$R-}
+  Result := False;
+  Value := 0;
+  if Size > maxSize then
+    exit;
+  lenStr := Length(aStr);
+  if lenStr = 0 then
+    exit;
+    
+  m := Word(aStr[0]);
+  n := Word(aStr[1]);
+  i := 1;
+  if m = 48 then
+  begin
+    if lenStr = 1 then
+    begin
+      Result := True;
+      exit;
+    end;
+
+    if n > 97 then
+      n := n - 32;
+    m := 38;
+    if (n = 66) or (n = 88) or (n = 79) then
+    begin
+      correct := 1;
+      i := 3;
+      if n = 66 then
+      begin
+        m := 37;
+      end
+      else
+        if n = 88 then
+          m := 36;
+      n := Word(aStr[2]);
+    end;
+  end;
+
+  while n = 48 do
+  begin
+    if (lenStr - correct) = 1 then
+    begin
+      Result := True;
+      exit;
+    end;
+    inc(i);
+    inc(correct);
+    n := Word(aStr[i]);
+  end;
+
+  n := n - 48;
+  useParametr := @allHOBParametr[Size];
+  if m = 38 then
+  begin
+    if (lenStr - correct) > useParametr^.maxLen8 then
+      exit;
+    if useParametr^.maxLen8 = (lenStr - correct) then
+      if (Size = isByte) or (Size = isLongWord) then
+      begin
+        if n > 3 then
+          exit;
+      end
+      else
+        if n > 1 then
+          exit;
+    nshl := 3;
+    z := 7;
+  end
+  else
+    if m = 37 then
+    begin
+      if (lenStr - correct) > useParametr^.maxLen2 then
+        exit;
+      nshl := 1;
+      z := 1;
+    end;
+  if m = 36 then
+  begin
+    if (lenStr - correct) > useParametr^.maxLen16 then
+      exit;
+    m := 0;
+    while i <= lenStr do
+    begin
+      m := m shl 4;
+      n := Word(aStr[i]) - 48;
+      if n > 55 then
+        exit;
+      n := dataHex[n];
+      if n = 16 then
+        exit;
+      m := m + n;
+      inc(i);
+    end;
+  end
+  else begin
+    Pnshl := @nshl;
+    m := n;
+    if m > z then
+      exit;
+    inc(i);
+    while i <= lenStr do
+    begin
+      m := m shl Pnshl^;
+      n := Word(aStr[i]) - 48;
+      if n > z then
+        exit;
+      m := m + n;
+      inc(i);
+    end;
+  end;
+  Value := m;
+  Result := true;
+  {$pop}
+end;
+
+function geWCharToInt(const aStr: array of WideChar; out Value: maxIntVal; Size: maxIntVal = maxSize): Boolean;
+var
+  lenStr, i: maxUIntVal;
+  m, n, z: maxUIntVal;
+  useParametr: PgeUseParametr;
+  IntMinus: Boolean = False;
+  correct: maxUIntVal = 0;
+label
+  jmpEndStr, loopZero;
+begin
+  {$push}
+  {$Q-}{$R-}
+  Result := False;
+  Value := 0;
+  if Size > maxSize then
+    Exit;
+
+  lenStr := Length(aStr);
+  if lenStr = 0 then
+    exit;
+    
+  m := Word(aStr[0]);
+  if m > 57 then
+    Exit;
+
+  if (lenStr = 1) and (m = 48) then
+  begin
+    Result := True;
+    exit;
+  end;
+  i := 1;
+  if m = 45 then
+  begin
+    if lenStr = 1 then
+      exit;
+    IntMinus := True;
+    m := Word(aStr[i]);                
+    inc(i);
+  end;
+
+loopZero:
+  if m = 48 then
+  begin
+    inc(i);
+    inc(correct);
+    m := Word(aStr[i]);
+    goto loopZero;
+  end;
+
+  inc(i);
+  m := m - 48;
+  if m > 9 then
+    exit;
+
+  useParametr := @allIntParametr[Size];
+  if i > lenStr - 1 then
+  begin
+    z := 0;
+    goto jmpEndStr;
+  end;
+  if (lenStr - correct) > useParametr^.maxLen then
+    Exit;
+  while i < lenStr - 1 do              
+  begin
+    n := (Word(aStr[i]) - 48);         
+    if n > 9 then
+      Exit;
+    m := m * 10 + n;
+    inc(i);
+  end;
+
+  if m > useParametr^.maxNumDiv10 then
+    exit;
+  m := m * 10;
+  z := Word(aStr[i]) - 48;           
+  if z > 9 then
+    exit;
+
+jmpEndStr:
+  if IntMinus then
+    n := useParametr^.maxNumeric + 1 - m
+  else
+    n := useParametr^.maxNumeric - m;
+  if z > n then
+    exit;
+
+  if IntMinus then
+    Value := - m - z
+  else
+    Value := m + z;
+  Result := true;
+  {$pop}
+end;
+{$EndIf}
 
 initialization
 
   SetNumberParametr;
 
 end.
-
