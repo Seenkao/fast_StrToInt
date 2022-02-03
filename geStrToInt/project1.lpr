@@ -184,8 +184,8 @@ begin
   WriteLn('Numbers:');
   for Count := 0 to 17 do
   begin
-    geStrToInt(myS[Count], nnnn);
-    WriteLn(nnnn);
+    geCharToInt(myS[Count][1..Length(myS[Count])], nnnn);
+    WriteLn(myS[Count], ' = ', nnnn); 
   end;
   
 (* Rus: блок примеров для использования трёх основных функций.
