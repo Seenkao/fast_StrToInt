@@ -48,7 +48,7 @@ three for unicode (WideChar):
 
 ***
 
-38 user-defined functions to convert strings to numbers.
+38 user-defined functions to convert strings to numbers (actually 19, for unicode they are duplicated).
 Six for direct indication  
 __are common__:
 - function __geStrToInt__(const Str: useString; out Value: maxIntVal; Size: LongWord = isInteger): Boolean; - for signed decimal numbers.
@@ -183,7 +183,7 @@ If this project was useful to you, you can support me. Sberbank:
 
 ***
 
-38 пользовательских функций, для перевода строк в число.
+38 пользовательских функций, для перевода строк в число (на самом деле 19, для юникода они дублируются).
 Шесть для прямого указания  
 __общие__:
 - function __geStrToInt__(const Str: useString; out Value: maxIntVal; Size: LongWord = isInteger): Boolean; - для десятичных чисел со знаком.
