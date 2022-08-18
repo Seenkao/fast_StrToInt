@@ -137,6 +137,8 @@ You can also contact me on the Lazarus forums and express your wishes and shortc
 If this project was useful to you, you can support me. Sberbank:
 2202200951985520
 
+The original source code is at [GutHub](https://github.com/Seenkao/fast_StrToInt) other sites may have a back branch.
+
 ***
 ***
 
@@ -274,3 +276,5 @@ __юникод__
 
 Если вам пригодился данный проект вы можете поддержать меня. Сбербанк:
 2202200951985520
+
+Оригинальный исходный код находится на [GutHub](https://github.com/Seenkao/fast_StrToInt) на других сайтах может отстающая ветка.
